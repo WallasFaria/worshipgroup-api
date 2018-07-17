@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 2018_07_15_183304) do
     t.string "unconfirmed_email"
     t.string "name"
     t.string "telephone"
+    t.date "date_of_birth"
     t.string "email"
     t.text "tokens"
     t.datetime "created_at", null: false

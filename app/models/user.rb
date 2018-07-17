@@ -7,4 +7,5 @@ class User < ActiveRecord::Base
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }
+  validates :date_of_birth, presence: true
 end
