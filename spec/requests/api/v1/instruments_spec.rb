@@ -26,12 +26,13 @@ RSpec.describe 'Instruments API', type: :request do
     end
 
     it 'returns 10 instruments' do
-      expect(json_body.size).to eq users.size
+      expect(json_body[:data].size).to eq users.size
     end
 
     it 'returns a list with name and icon attributes' do
-      expect(json_body[2][:name]).to eq users[2].name
-      expect(json_body[2][:icon]).to eq users[2].icon
+      expect(json_body[:data][2][:name]).to eq users[2].name
+      expect(json_body[:data][2][:icon]).to start_with 'http'
+      expect(json_body[:data][2][:icon]).to include users[2].icon
     end
   end
 end

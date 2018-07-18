@@ -1,5 +1,6 @@
 class Api::V1::InstrumentsController < ApplicationController
   def index
-    render json: Instrument.all, status: :ok
+    @instruments = Instrument.all
+    render :index , status: :ok
   end
 end
