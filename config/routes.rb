@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   namespace :api, path: '/', defaults: { format: :json } do
     namespace :v1, path: '/', constraints: ApiVersionConstraint.new(version: 1) do
       mount_devise_token_auth_for 'User', at: 'auth', :controllers => { registrations: 'api/v1/registrations' }
+
+      resources :instruments, only: [:index]
     end
   end
 end
