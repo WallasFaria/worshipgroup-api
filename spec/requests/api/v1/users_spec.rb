@@ -25,7 +25,7 @@ RSpec.describe 'Users API', type: :request do
       end
 
       it 'returns the user' do
-        expect(json_body[:data][:id].to_i).to eq user.id
+        expect(json_body.data.id.to_i).to eq user.id
       end
     end
 
@@ -54,7 +54,7 @@ RSpec.describe 'Users API', type: :request do
       end
 
       it 'returns json data for created user' do
-        expect(json_body[:data][:email]).to eq(user_params[:email])
+        expect(json_body.data.email).to eq(user_params[:email])
       end
     end
 
@@ -66,7 +66,7 @@ RSpec.describe 'Users API', type: :request do
       end
 
       it 'returns json data for the errors' do
-        expect(json_body).to have_key(:errors)
+        expect(json_body).to respond_to(:errors)
       end
     end
   end
@@ -90,9 +90,9 @@ RSpec.describe 'Users API', type: :request do
       end
 
       it 'returns json data for updated user' do
-        expect(json_body[:data][:name]).to eq(user_params[:name])
-        expect(json_body[:data][:telephone]).to eq(user_params[:telephone])
-        expect(json_body[:data][:date_of_birth]).to eq(user_params[:date_of_birth])
+        expect(json_body.data.name).to eq(user_params[:name])
+        expect(json_body.data.telephone).to eq(user_params[:telephone])
+        expect(json_body.data.date_of_birth).to eq(user_params[:date_of_birth])
       end
     end
 
@@ -104,7 +104,7 @@ RSpec.describe 'Users API', type: :request do
       end
 
       it 'returns json data for the errors' do
-        expect(json_body).to have_key(:errors)
+        expect(json_body).to respond_to(:errors)
       end
     end
   end

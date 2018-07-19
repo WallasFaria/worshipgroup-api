@@ -41,7 +41,7 @@ RSpec.describe 'Sessions API', type: :request do
       end
 
       it 'retorns the json data for the errors' do
-        expect(json_body).to have_key(:errors)
+        expect(json_body).to respond_to(:errors)
       end
     end
   end

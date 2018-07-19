@@ -24,12 +24,12 @@ RSpec.describe "Api::V1::Musics", type: :request do
       end
 
       it 'returns musics list with pagination' do
-        expect(json_body[:data].size).to eq 10
-        expect(json_body).to have_key :links
+        expect(json_body.data.size).to eq 10
+        expect(json_body).to respond_to :links
       end
 
       it 'navegates to next page' do
-        get json_body[:links][:next], headers: headers
+        get json_body.links.next, headers: headers
         body = JSON.parse(response.body)
 
         expect(body['data'][0]['id']).to eq(musics[10].id)
@@ -47,7 +47,7 @@ RSpec.describe "Api::V1::Musics", type: :request do
       end
 
       it 'returns only the musics matching' do
-        returned_music_names = json_body[:data].map{ |m| m[:name] }
+        returned_music_names = json_body.data.map{ |m| m.name }
 
         expect(returned_music_names).to eq([good_music_2.name, good_music_1.name])
       end
@@ -66,10 +66,10 @@ RSpec.describe "Api::V1::Musics", type: :request do
     end
 
     it 'returns the json for music' do
-      expect(json_body[:data][:name]).to eq(music.name)
-      expect(json_body[:data][:artist]).to eq(music.artist)
-      expect(json_body[:data][:url_youtube]).to eq(music.url_youtube)
-      expect(json_body[:data][:url_cipher]).to eq(music.url_cipher)
+      expect(json_body.data.name).to eq(music.name)
+      expect(json_body.data.artist).to eq(music.artist)
+      expect(json_body.data.url_youtube).to eq(music.url_youtube)
+      expect(json_body.data.url_cipher).to eq(music.url_cipher)
     end
   end
 
@@ -90,7 +90,7 @@ RSpec.describe "Api::V1::Musics", type: :request do
       end
 
       it 'return the json for created music' do
-        expect(json_body[:data][:name]).to eq(music_params[:name])
+        expect(json_body.data.name).to eq(music_params[:name])
       end
     end
 
@@ -106,7 +106,7 @@ RSpec.describe "Api::V1::Musics", type: :request do
       end
 
       it 'returns the json errors for name' do
-        expect(json_body[:errors]).to have_key(:name)
+        expect(json_body.errors).to respond_to(:name)
       end
     end
   end
@@ -130,7 +130,7 @@ RSpec.describe "Api::V1::Musics", type: :request do
       end
 
       it 'return the json for updated music' do
-        expect(json_body[:data][:name]).to eq(music_params[:name])
+        expect(json_body.data.name).to eq(music_params[:name])
       end
     end
 
@@ -146,7 +146,7 @@ RSpec.describe "Api::V1::Musics", type: :request do
       end
 
       it 'returns the json errors for name' do
-        expect(json_body[:errors]).to have_key(:name)
+        expect(json_body.errors).to respond_to(:name)
       end
     end
   end
