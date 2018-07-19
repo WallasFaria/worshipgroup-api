@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       mount_devise_token_auth_for 'User', at: 'auth', :controllers => { registrations: 'api/v1/registrations' }
 
       resources :instruments, only: [:index]
+      resources :musics
     end
   end
 end
