@@ -1,17 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Instruments API', type: :request do
-  let!(:user) { create :user }
-  let(:auth_data) { user.create_new_auth_token }
-  let(:headers) do
-    {
-      'Accept': 'application/wf.worshipgroup.v1',
-      'Content-Type': Mime[:json].to_s,
-      'access-token': auth_data['access-token'],
-      'uid': auth_data['uid'],
-      'client': auth_data['client'],
-    }
-  end
+  include HeaderSupport
+  let(:headers) { headers_with_auth }
 
   before { host! 'api.worshipgroup.test' }
   let!(:users) { create_list :instrument, 10 }
