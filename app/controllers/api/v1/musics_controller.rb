@@ -8,7 +8,7 @@ class Api::V1::MusicsController < ApplicationController
       per = params[:page][:size] if params[:page][:size].present?
     end
 
-    @musics = Music.page(page).per(per)
+    @musics = Music.ransack(params[:q]).result.page(page).per(per)
   end
 
   def show

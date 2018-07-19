@@ -15,26 +15,42 @@ RSpec.describe "Api::V1::Musics", type: :request do
   end
 
   describe "GET /musics" do
-    let!(:musics) { create_list :music, 30 }
+    context 'when filter params is not send' do
+      let!(:musics) { create_list :music, 30 }
+      before { get '/musics', headers: headers }
 
-    before do
-      get '/musics', headers: headers
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns musics list with pagination' do
+        expect(json_body[:data].size).to eq 10
+        expect(json_body).to have_key :links
+      end
+
+      it 'navegates to next page' do
+        get json_body[:links][:next], headers: headers
+        body = JSON.parse(response.body)
+
+        expect(body['data'][0]['id']).to eq(musics[10].id)
+      end
     end
 
-    it 'returns status code 200' do
-      expect(response).to have_http_status(200)
-    end
+    context 'when filter and sorting params are send' do
+      let!(:good_music_1) { create(:music, name: 'A good song') }
+      let!(:good_music_2) { create(:music, name: 'Another good song') }
+      let!(:excelent_music_1) { create(:music, name: 'A great song') }
+      let!(:excelent_music_2) { create(:music, name: 'Another great song') }
 
-    it 'returns musics list with pagination' do
-      expect(json_body[:data].size).to eq 10
-      expect(json_body).to have_key :links
-    end
+      before do
+        get '/musics?q[name_cont_all]=good&q[name_cont_any]=song&q[s]=name+DESC', headers: headers
+      end
 
-    it 'navegates to next page' do
-      get json_body[:links][:next], headers: headers
-      body = JSON.parse(response.body)
+      it 'returns only the musics matching' do
+        returned_music_names = json_body[:data].map{ |m| m[:name] }
 
-      expect(body['data'][0]['id']).to eq(musics[10].id)
+        expect(returned_music_names).to eq([good_music_2.name, good_music_1.name])
+      end
     end
   end
 
