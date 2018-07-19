@@ -25,8 +25,16 @@ RSpec.describe "Api::V1::Musics", type: :request do
       expect(response).to have_http_status(200)
     end
 
-    it 'returns 30 musics' do
-      expect(json_body[:data].size).to eq 30
+    it 'returns musics list with pagination' do
+      expect(json_body[:data].size).to eq 10
+      expect(json_body).to have_key :links
+    end
+
+    it 'navegates to next page' do
+      get json_body[:links][:next], headers: headers
+      body = JSON.parse(response.body)
+
+      expect(body['data'][0]['id']).to eq(musics[10].id)
     end
   end
 

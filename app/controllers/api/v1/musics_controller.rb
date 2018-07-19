@@ -2,7 +2,13 @@ class Api::V1::MusicsController < ApplicationController
   before_action :set_music, only: [:show, :update, :destroy]
 
   def index
-    @musics = Music.all
+    page, per = 1, 10
+    if params[:page].present?
+      page = params[:page][:number] if params[:page][:number].present?
+      per = params[:page][:size] if params[:page][:size].present?
+    end
+
+    @musics = Music.page(page).per(per)
   end
 
   def show
