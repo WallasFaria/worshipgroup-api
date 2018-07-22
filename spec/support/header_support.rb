@@ -1,7 +1,7 @@
 module HeaderSupport
   def headers_with_auth
-    user = create :user
-    auth_data = user.create_new_auth_token
+    @user = create :user
+    auth_data = @user.create_new_auth_token
 
     headers = {
       'Accept': 'application/wf.worshipgroup.v1',
