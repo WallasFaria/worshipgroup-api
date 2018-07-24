@@ -6,6 +6,8 @@ RSpec.describe Music, type: :model do
   it { should respond_to :url_youtube }
   it { should respond_to :url_cipher }
 
+  it { should belong_to :group }
+
   it { should validate_presence_of :name }
   it { should validate_presence_of :artist }
 

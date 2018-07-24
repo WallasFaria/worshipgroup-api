@@ -9,7 +9,9 @@ Rails.application.routes.draw do
 
       resources :instruments, only: [:index]
       resources :musics
-      resources :groups
+      resources :groups do
+        resources :musics
+      end
     end
   end
 end

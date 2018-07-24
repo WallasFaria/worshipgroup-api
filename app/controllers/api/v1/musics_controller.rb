@@ -15,7 +15,7 @@ class Api::V1::MusicsController < ApplicationController
   end
 
   def create
-    @music = Music.new(music_params)
+    @music = current_group.musics.new(music_params)
 
     if @music.save
       render :show, status: :created, location: api_v1_musics_url(@music)
@@ -38,7 +38,11 @@ class Api::V1::MusicsController < ApplicationController
 
   private
     def set_music
-      @music = Music.find(params[:id])
+      @music = current_group.musics.find(params[:id])
+    end
+
+    def current_group
+      @group ||= current_api_v1_user.groups.find(params[:group_id])
     end
 
     def music_params
