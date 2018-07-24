@@ -51,7 +51,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
   describe 'GET /groups/:id' do
     let!(:group) { create(:group, user_id: @user.id) }
 
-    context 'the user is a member of the group' do
+    context 'when the user is a member of the group' do
       before { get "/groups/#{group.id}", headers: headers }
 
       it { expect(response).to have_http_status(:ok) }
@@ -60,11 +60,11 @@ RSpec.describe "Api::V1::Groups", type: :request do
         expect(json_body.data.name).to eq(group.name)
       end
 
-      # it 'should return group members'
+      it 'should return group members'
     end
 
-    context 'the user is not a member of the group' do
-      # it 'should return status code 403'
+    context 'when the user is not a member of the group' do
+      it 'should return status code 403'
     end
   end
 
