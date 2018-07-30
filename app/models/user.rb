@@ -5,7 +5,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
 
-  has_many :groups
+  has_many :members
+  has_many :groups, through: :members
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }

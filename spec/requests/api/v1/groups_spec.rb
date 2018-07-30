@@ -5,7 +5,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
   let!(:headers) { headers_with_auth }
 
   describe "GET /groups" do
-    let!(:groups) { create_list(:group, 3, user_id: @user.id) }
+    let!(:groups) { create_list(:group, 3, member_admin: @user.id ) }
     before { get '/groups', headers: headers }
 
     it { expect(response).to have_http_status(:ok) }
@@ -31,6 +31,10 @@ RSpec.describe "Api::V1::Groups", type: :request do
       it 'should return the json for created group' do
         expect(json_body.data.name).to eq(group_params[:name])
       end
+
+      it 'should adds the current user with group member' do
+        expect(json_body.data.members.map(&:id)).to include(@user.id)
+      end
     end
 
     context 'when the params are invalids' do
@@ -49,10 +53,15 @@ RSpec.describe "Api::V1::Groups", type: :request do
   end
 
   describe 'GET /groups/:id' do
-    let!(:group) { create(:group, user_id: @user.id) }
+    let!(:another_user) { create(:random_user) }
 
     context 'when the user is a member of the group' do
-      before { get "/groups/#{group.id}", headers: headers }
+      let!(:group) { create(:group, member_admin: @user.id) }
+
+      before do
+        group.members.create(user: another_user, rule: :default)
+        get "/groups/#{group.id}", headers: headers
+      end
 
       it { expect(response).to have_http_status(:ok) }
 
@@ -60,16 +69,24 @@ RSpec.describe "Api::V1::Groups", type: :request do
         expect(json_body.data.name).to eq(group.name)
       end
 
-      it 'should return group members'
+      it 'should return group members' do
+        member_names = [@user.name, another_user.name]
+        expect(json_body.data.members.map(&:name)).to eq(member_names)
+      end
     end
 
     context 'when the user is not a member of the group' do
-      it 'should return status code 403'
+      let!(:group) { create(:group, member_admin: another_user.id) }
+
+      it 'shoul return ActiveRecord Not Found error' do
+        expect { get "/groups/#{group.id}", headers: headers }
+          .to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
   end
 
   describe 'PUT /groups/:id' do
-    let!(:group) { create(:group, user_id: @user.id) }
+    let!(:group) { create(:group, member_admin: @user.id) }
 
     before do
       put "/groups/#{group.id}", params: group_params.to_json, headers: headers
@@ -105,7 +122,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
   end
 
   describe 'DELETE /groups/:id' do
-    let(:group) { create(:group, user_id: @user.id) }
+    let(:group) { create(:group, member_admin: @user.id) }
 
     before { delete "/groups/#{group.id}", headers: headers }
 

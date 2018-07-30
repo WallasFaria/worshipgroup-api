@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Api::V1::Musics", type: :request do
   include HeaderSupport
   let!(:headers) { headers_with_auth }
-  let(:group) { create(:group, user_id: @user.id) }
+  let(:group) { create(:group, member_admin: @user.id) }
 
   before { host! 'api.worshipgroup.test' }
 
