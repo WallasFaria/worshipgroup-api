@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       resources :musics
       resources :groups do
         resources :musics
+        resources :members, only: [:create]
       end
     end
   end
