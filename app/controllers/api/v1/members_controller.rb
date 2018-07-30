@@ -11,6 +11,16 @@ class Api::V1::MembersController < ApplicationController
     end
   end
 
+  def update
+    @member = @group.members.find(params[:id])
+
+    if @member.update(rule: member_params[:rule])
+      render :show, status: :ok
+    else
+      render json: { errors: @member.errors }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def set_group

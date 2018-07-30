@@ -31,4 +31,15 @@ RSpec.describe "Api::V1::Members", type: :request do
     end
   end
 
+  describe 'PUT /groups/:group_id/members/:id' do
+    let(:member) { group.members.create(user: another_user, rule: :default) }
+    before { put "/groups/#{group.id}/members/#{member.id}",
+                 params: { rule: :admin }.to_json,
+                 headers: headers }
+
+    it 'should return the updated member data' do
+      expect(json_body.data.rule).to eq('admin')
+    end
+  end
+
 end
