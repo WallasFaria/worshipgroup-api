@@ -21,6 +21,10 @@ class Api::V1::MembersController < ApplicationController
     end
   end
 
+  def destroy
+    @group.members.find(params[:id]).destroy
+  end
+
   private
 
   def set_group

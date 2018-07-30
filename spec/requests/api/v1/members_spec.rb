@@ -42,4 +42,14 @@ RSpec.describe "Api::V1::Members", type: :request do
     end
   end
 
+  describe 'DELETE /groups/:group_id/members/:id' do
+    let(:member) { group.members.create(user: another_user, rule: :default) }
+    before { delete "/groups/#{group.id}/members/#{member.id}", headers: headers }
+
+    it { expect(response).to have_http_status(204) }
+
+    it 'should remove the group member' do
+      expect(Member.find_by(id: member.id)).to be_nil
+    end
+  end
 end
