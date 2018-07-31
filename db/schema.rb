@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_26_030113) do
+ActiveRecord::Schema.define(version: 2018_07_31_010235) do
 
   create_table "groups", force: :cascade do |t|
     t.string "name"
@@ -44,6 +44,15 @@ ActiveRecord::Schema.define(version: 2018_07_26_030113) do
     t.datetime "updated_at", null: false
     t.integer "group_id"
     t.index ["group_id"], name: "index_musics_on_group_id"
+  end
+
+  create_table "user_instruments", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "instrument_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["instrument_id"], name: "index_user_instruments_on_instrument_id"
+    t.index ["user_id"], name: "index_user_instruments_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
