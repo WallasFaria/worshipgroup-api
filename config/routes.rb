@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     namespace :v1, path: '/', constraints: ApiVersionConstraint.new(version: 1) do
       mount_devise_token_auth_for 'User', at: 'auth', :controllers => { registrations: 'api/v1/registrations' }
 
-      post 'users/me/roles', to: 'users#add_roles'
+      post 'profile/roles', to: 'users#add_roles'
 
       resources :roles, only: [:index]
       resources :musics

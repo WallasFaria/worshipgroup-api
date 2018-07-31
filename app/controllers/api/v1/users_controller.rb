@@ -8,7 +8,7 @@ class Api::V1::UsersController < ApplicationController
     end
 
     if @user.save
-      render :me, status: :created
+      render :show, status: :created
     else
       render json: { errors: @user.errors }, status: :unprocessable_entity
     end

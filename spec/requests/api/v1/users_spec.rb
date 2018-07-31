@@ -6,10 +6,10 @@ RSpec.describe 'Users API', type: :request do
 
   before { host! 'api.worshipgroup.test' }
 
-  describe 'POST /users/me/roles' do
+  describe 'POST /profile/roles' do
     let!(:roles) { create_list(:role, 3) }
 
-    before { post '/users/me/roles', headers: headers, params: { role_ids: ids }.to_json }
+    before { post '/profile/roles', headers: headers, params: { role_ids: ids }.to_json }
 
     context 'when the request params are valid' do
       let(:ids) { roles.map(&:id) }
