@@ -1,10 +1,10 @@
 class Api::V1::UsersController < ApplicationController
   before_action :authenticate_api_v1_user!
 
-  def add_instruments
+  def add_roles
     @user = current_api_v1_user
-    params[:instrument_ids].each do |id|
-      @user.instruments << Instrument.find(id)
+    params[:role_ids].each do |id|
+      @user.roles << Role.find(id)
     end
 
     if @user.save

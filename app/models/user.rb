@@ -8,8 +8,8 @@ class User < ActiveRecord::Base
   has_many :members
   has_many :groups, through: :members
 
-  has_many :user_instruments, dependent: :delete_all
-  has_many :instruments, through: :user_instruments
+  has_many :user_roles, dependent: :delete_all
+  has_many :roles, through: :user_roles
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }

@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :instrument do
+  factory :role do
     name { Faker::Lorem.word }
     icon { Faker::Internet.url }
   end

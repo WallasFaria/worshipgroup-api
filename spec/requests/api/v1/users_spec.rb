@@ -6,18 +6,18 @@ RSpec.describe 'Users API', type: :request do
 
   before { host! 'api.worshipgroup.test' }
 
-  describe 'POST /users/me/instruments' do
-    let!(:instruments) { create_list(:instrument, 3) }
+  describe 'POST /users/me/roles' do
+    let!(:roles) { create_list(:role, 3) }
 
-    before { post '/users/me/instruments', headers: headers, params: { instrument_ids: ids }.to_json }
+    before { post '/users/me/roles', headers: headers, params: { role_ids: ids }.to_json }
 
     context 'when the request params are valid' do
-      let(:ids) { instruments.map(&:id) }
+      let(:ids) { roles.map(&:id) }
 
       it { expect(response).to have_http_status(:created) }
 
-      it 'returns json data from the user with the added instruments' do
-        expect(json_body.data.instruments.map(&:name)).to include(*instruments.map(&:name))
+      it 'returns json data from the user with the added roles' do
+        expect(json_body.data.roles.map(&:name)).to include(*roles.map(&:name))
       end
     end
   end
