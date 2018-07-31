@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_31_035155) do
+ActiveRecord::Schema.define(version: 2018_07_31_042540) do
 
   create_table "groups", force: :cascade do |t|
     t.string "name"
@@ -28,7 +28,14 @@ ActiveRecord::Schema.define(version: 2018_07_31_035155) do
     t.index ["user_id"], name: "index_members_on_user_id"
   end
 
-  create_table "musics", force: :cascade do |t|
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.string "icon"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "songs", force: :cascade do |t|
     t.string "name"
     t.string "artist"
     t.string "url_youtube"
@@ -36,14 +43,7 @@ ActiveRecord::Schema.define(version: 2018_07_31_035155) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "group_id"
-    t.index ["group_id"], name: "index_musics_on_group_id"
-  end
-
-  create_table "roles", force: :cascade do |t|
-    t.string "name"
-    t.string "icon"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_songs_on_group_id"
   end
 
   create_table "user_roles", force: :cascade do |t|

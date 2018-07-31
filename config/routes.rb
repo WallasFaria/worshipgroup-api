@@ -10,9 +10,9 @@ Rails.application.routes.draw do
       post 'profile/roles', to: 'users#add_roles'
 
       resources :roles, only: [:index]
-      resources :musics
+      resources :songs
       resources :groups do
-        resources :musics
+        resources :songs
         resources :members, only: [:create, :update, :destroy]
       end
     end

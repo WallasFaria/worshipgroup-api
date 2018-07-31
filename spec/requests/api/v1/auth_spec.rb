@@ -79,7 +79,7 @@ RSpec.describe 'Auth API', type: :request do
     context 'when the request params are valid' do
       let(:user_params) do
         {
-          name: 'Fulano Musicinthechurch',
+          name: 'Fulano Songinthechurch',
           telephone: '+5522997465864',
           date_of_birth: '1988-06-26'
         }
