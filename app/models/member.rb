@@ -4,6 +4,6 @@ class Member < ApplicationRecord
 
   validates_uniqueness_of :user, scope: :group
   validates_presence_of :user, :group
-  validates :rule, presence: true,
-                   inclusion: { in: %w[admin collaborator default] }
+  validates :permission, presence: true,
+                         inclusion: { in: %w[admin collaborator default] }
 end

@@ -14,7 +14,7 @@ class Api::V1::MembersController < ApplicationController
   def update
     @member = @group.members.find(params[:id])
 
-    if @member.update(rule: member_params[:rule])
+    if @member.update(permission: member_params[:permission])
       render :show, status: :ok
     else
       render json: { errors: @member.errors }, status: :unprocessable_entity
@@ -32,6 +32,6 @@ class Api::V1::MembersController < ApplicationController
   end
 
   def member_params
-    params.require(:member).permit(:user_id, :rule)
+    params.require(:member).permit(:user_id, :permission)
   end
 end

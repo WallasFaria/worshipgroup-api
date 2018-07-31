@@ -8,7 +8,7 @@ FactoryBot.define do
 
     after(:create) do |group, options|
       group.members.create(
-        rule: :admin,
+        permission: :admin,
         user_id: options.member_admin
       ) if options.member_admin
     end

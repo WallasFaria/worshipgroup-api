@@ -13,7 +13,7 @@ class Api::V1::GroupsController < ApplicationController
     @group = Group.new(group_params)
 
     if @group.save
-      @group.members.create(user_id: current_api_v1_user.id, rule: :admin)
+      @group.members.create(user_id: current_api_v1_user.id, permission: :admin)
       render :show, status: :created, location: api_v1_group_url(@group)
     else
       render json: { errors: @group.errors }, status: :unprocessable_entity

@@ -59,7 +59,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
       let!(:group) { create(:group, member_admin: @user.id) }
 
       before do
-        group.members.create(user: another_user, rule: :default)
+        group.members.create(user: another_user, permission: :default)
         get "/groups/#{group.id}", headers: headers
       end
 

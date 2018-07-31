@@ -12,7 +12,7 @@ RSpec.describe "Api::V1::Members", type: :request do
     end
 
     context 'when the params are valids' do
-      let(:member_params) { { user_id: another_user.id, rule: :default } }
+      let(:member_params) { { user_id: another_user.id, permission: :default } }
 
       it { expect(response).to have_http_status(:created) }
 
@@ -27,23 +27,23 @@ RSpec.describe "Api::V1::Members", type: :request do
     end
 
     context 'when the params are invalids' do
-      # let(:member_params) { { user_id: @user.id, rule: :default } }
+      # let(:member_params) { { user_id: @user.id, permission: :default } }
     end
   end
 
   describe 'PUT /groups/:group_id/members/:id' do
-    let(:member) { group.members.create(user: another_user, rule: :default) }
+    let(:member) { group.members.create(user: another_user, permission: :default) }
     before { put "/groups/#{group.id}/members/#{member.id}",
-                 params: { rule: :admin }.to_json,
+                 params: { permission: :admin }.to_json,
                  headers: headers }
 
     it 'should return the updated member data' do
-      expect(json_body.data.rule).to eq('admin')
+      expect(json_body.data.permission).to eq('admin')
     end
   end
 
   describe 'DELETE /groups/:group_id/members/:id' do
-    let(:member) { group.members.create(user: another_user, rule: :default) }
+    let(:member) { group.members.create(user: another_user, permission: :default) }
     before { delete "/groups/#{group.id}/members/#{member.id}", headers: headers }
 
     it { expect(response).to have_http_status(204) }
