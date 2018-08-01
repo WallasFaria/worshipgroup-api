@@ -13,4 +13,9 @@ class Api::V1::UsersController < ApplicationController
       render json: { errors: @user.errors }, status: :unprocessable_entity
     end
   end
+
+  def remove_role
+    role = current_api_v1_user.roles.find(params[:id])
+    current_api_v1_user.roles.destroy(role)
+  end
 end

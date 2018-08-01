@@ -21,4 +21,17 @@ RSpec.describe 'Users API', type: :request do
       end
     end
   end
+
+  describe 'DELETE /profile/roles/:id' do
+    let!(:roles) { @user.roles << create_list(:role, 3) }
+    let(:role_id) { roles.first.id }
+
+    before { delete "/profile/roles/#{role_id}", headers: headers }
+
+    it { expect(response).to have_http_status(204) }
+
+    it 'should disassociate user role in database' do
+      expect(@user.roles.find_by(id: role_id)).to be_nil
+    end
+  end
 end
