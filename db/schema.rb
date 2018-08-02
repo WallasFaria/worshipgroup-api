@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_31_042540) do
+ActiveRecord::Schema.define(version: 2018_08_02_012917) do
 
   create_table "groups", force: :cascade do |t|
     t.string "name"
@@ -26,6 +26,34 @@ ActiveRecord::Schema.define(version: 2018_07_31_042540) do
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_members_on_group_id"
     t.index ["user_id"], name: "index_members_on_user_id"
+  end
+
+  create_table "presentations", force: :cascade do |t|
+    t.datetime "date"
+    t.string "description"
+    t.integer "group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_presentations_on_group_id"
+  end
+
+  create_table "presentations_members", force: :cascade do |t|
+    t.integer "member_id"
+    t.integer "presentation_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["member_id"], name: "index_presentations_members_on_member_id"
+    t.index ["presentation_id"], name: "index_presentations_members_on_presentation_id"
+  end
+
+  create_table "presentations_songs", force: :cascade do |t|
+    t.string "tone"
+    t.integer "song_id"
+    t.integer "presentation_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["presentation_id"], name: "index_presentations_songs_on_presentation_id"
+    t.index ["song_id"], name: "index_presentations_songs_on_song_id"
   end
 
   create_table "roles", force: :cascade do |t|
