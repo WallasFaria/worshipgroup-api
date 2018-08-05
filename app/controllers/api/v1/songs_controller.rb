@@ -1,4 +1,5 @@
 class Api::V1::SongsController < ApplicationController
+  before_action :authenticate_api_v1_user!
   before_action :set_song, only: [:show, :update, :destroy]
 
   def index

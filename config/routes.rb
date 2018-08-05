@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       resources :groups do
         resources :songs
         resources :members, only: [:create, :update, :destroy]
+        resources :presentations, only: [:create, :show, :update, :destroy]
       end
     end
   end
