@@ -55,7 +55,7 @@ RSpec.describe "Presentations API", type: :request do
   end
 
   describe '/groups/:group_id/presentations' do
-    let!(:presentations) { create_list(:presentation_with_songs, 2, group: group) }
+    let!(:presentations) { create_list(:presentation, 2, :with_songs, group: group) }
     before { get "/groups/#{group.id}/presentations", headers: headers }
 
     it { expect(response).to have_http_status :ok }

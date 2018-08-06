@@ -3,7 +3,7 @@ FactoryBot.define do
     date { Faker::Time.between(Date.today, 10.days.from_now) }
     group
 
-    factory :presentation_with_songs do
+    trait :with_songs do
       transient { songs_count 5 }
 
       after(:create) do |presentation, evaluator|
