@@ -54,6 +54,22 @@ RSpec.describe "Presentations API", type: :request do
     end
   end
 
+  describe '/groups/:group_id/presentations' do
+    let!(:presentations) { create_list(:presentation_with_songs, 2, group: group) }
+    before { get "/groups/#{group.id}/presentations", headers: headers }
+
+    it { expect(response).to have_http_status :ok }
+
+    it 'returns presentations array with songs' do
+      expect(json_body.data.first).to respond_to(:songs)
+      expect(json_body.data.first.songs.first).to respond_to(:name)
+      expect(json_body.data.first.songs.first).to respond_to(:artist)
+      expect(json_body.data.first.songs.first).to respond_to(:tone)
+      expect(json_body.data.first.songs.first).to respond_to(:url_youtube)
+      expect(json_body.data.first.songs.first).to respond_to(:url_cipher)
+    end
+  end
+
   describe 'DELETE /groups/:group_id/presentations/:id' do
     let(:presentation) { group.presentations.create({ date: Time.now }) }
     before { delete "/groups/#{group.id}/presentations/#{presentation.id}", headers: headers }

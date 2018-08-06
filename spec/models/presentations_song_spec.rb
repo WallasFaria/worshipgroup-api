@@ -7,6 +7,6 @@ RSpec.describe PresentationsSong, type: :model do
   it { should respond_to :name }
   it { should respond_to :artist }
   it { should respond_to :tone }
-  it { should respond_to :url_video }
+  it { should respond_to :url_youtube }
   it { should respond_to :url_cipher }
 end

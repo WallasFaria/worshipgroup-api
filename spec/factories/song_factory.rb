@@ -4,5 +4,6 @@ FactoryBot.define do
     artist { Faker::Name.name }
     url_youtube { Faker::Internet.url }
     url_cipher { Faker::Internet.url }
+    group
   end
 end

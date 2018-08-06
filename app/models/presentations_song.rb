@@ -10,8 +10,8 @@ class PresentationsSong < ApplicationRecord
     self.song.artist
   end
 
-  def url_video
-    self.song.url_video
+  def url_youtube
+    self.song.url_youtube
   end
 
   def url_cipher
