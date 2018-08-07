@@ -61,19 +61,25 @@ RSpec.describe "Presentations API", type: :request do
     it { expect(response).to have_http_status :ok }
 
     it 'returns presentations array with songs' do
-      expect(json_body.data.first).to respond_to(:songs)
-      expect(json_body.data.first.songs.first).to respond_to(:id)
-      expect(json_body.data.first.songs.first).to respond_to(:name)
-      expect(json_body.data.first.songs.first).to respond_to(:artist)
-      expect(json_body.data.first.songs.first).to respond_to(:tone)
-      expect(json_body.data.first.songs.first).to respond_to(:url_youtube)
-      expect(json_body.data.first.songs.first).to respond_to(:url_cipher)
+      presentation = json_body.data.first
+      expect(presentation).to respond_to(:songs)
+
+      a_song = presentation.songs.first
+      expect(a_song).to respond_to(:id)
+      expect(a_song).to respond_to(:name)
+      expect(a_song).to respond_to(:artist)
+      expect(a_song).to respond_to(:tone)
+      expect(a_song).to respond_to(:url_youtube)
+      expect(a_song).to respond_to(:url_cipher)
     end
 
     it 'returns presentations array with members' do
-      expect(json_body.data.first).to respond_to(:members)
-      expect(json_body.data.first.members.first).to respond_to(:id)
-      expect(json_body.data.first.members.first).to respond_to(:name)
+      presentation = json_body.data.first
+      expect(presentation).to respond_to(:members)
+
+      a_member = presentation.members.first
+      expect(a_member).to respond_to(:id)
+      expect(a_member).to respond_to(:name)
     end
   end
 
