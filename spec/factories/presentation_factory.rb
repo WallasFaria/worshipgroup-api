@@ -13,5 +13,18 @@ FactoryBot.define do
         end
       end
     end
+
+    trait :with_members do
+      transient do
+        members_count 4
+      end
+
+      after(:create) do |presentation, evaluator|
+        members = create_list(:member, evaluator.members_count, group: presentation.group)
+        members.each do |member|
+          create(:presentations_member, presentation: presentation, member: member)
+        end
+      end
+    end
   end
 end

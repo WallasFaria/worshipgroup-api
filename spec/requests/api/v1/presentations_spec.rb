@@ -55,7 +55,7 @@ RSpec.describe "Presentations API", type: :request do
   end
 
   describe '/groups/:group_id/presentations' do
-    let!(:presentations) { create_list(:presentation, 2, :with_songs, group: group) }
+    let!(:presentations) { create_list(:presentation, 2, :with_songs, :with_members, group: group) }
     before { get "/groups/#{group.id}/presentations", headers: headers }
 
     it { expect(response).to have_http_status :ok }
@@ -67,6 +67,12 @@ RSpec.describe "Presentations API", type: :request do
       expect(json_body.data.first.songs.first).to respond_to(:tone)
       expect(json_body.data.first.songs.first).to respond_to(:url_youtube)
       expect(json_body.data.first.songs.first).to respond_to(:url_cipher)
+    end
+
+    it 'returns presentations array with members' do
+      expect(json_body.data.first).to respond_to(:members)
+      expect(json_body.data.first.members.first).to respond_to(:id)
+      expect(json_body.data.first.members.first).to respond_to(:name)
     end
   end
 
