@@ -62,6 +62,7 @@ RSpec.describe "Presentations API", type: :request do
 
     it 'returns presentations array with songs' do
       expect(json_body.data.first).to respond_to(:songs)
+      expect(json_body.data.first.songs.first).to respond_to(:id)
       expect(json_body.data.first.songs.first).to respond_to(:name)
       expect(json_body.data.first.songs.first).to respond_to(:artist)
       expect(json_body.data.first.songs.first).to respond_to(:tone)

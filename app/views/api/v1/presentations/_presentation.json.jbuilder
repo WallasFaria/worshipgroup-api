@@ -6,6 +6,7 @@ json.members presentation.members do |member|
 end
 
 json.songs presentation.songs do |song|
+  json.id song.id
   json.name song.name
   json.artist song.artist
   json.tone song.tone
