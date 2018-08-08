@@ -26,6 +26,11 @@ class Api::V1::PresentationsMembersController < ApplicationController
     render :show, status: :ok
   end
 
+  def destroy
+    presentations_member = current_presentation.members.find(params[:id])
+    current_presentation.members.destroy presentations_member
+  end
+
   private
 
   def current_group

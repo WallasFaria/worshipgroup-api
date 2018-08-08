@@ -16,7 +16,7 @@ Rails.application.routes.draw do
         resources :songs
         resources :members, only: [:create, :update, :destroy]
         resources :presentations, only: [:index, :create, :show, :update, :destroy] do
-          resources :members, only: [:create, :update], controller: :presentations_members
+          resources :members, only: [:create, :update, :destroy], controller: :presentations_members
         end
       end
     end

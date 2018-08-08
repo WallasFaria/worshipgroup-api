@@ -58,4 +58,19 @@ RSpec.describe "PresentationsMembers API", type: :request do
       end
     end
   end
+
+  describe 'DELETE /groups/:group_id/presentations/:presentation_id/members/:member_id' do
+    let!(:presentations_member) { presentation.members.create(member: groups_member) }
+
+    before do
+      delete "/groups/#{group.id}/presentations/#{presentation.id}/members/#{presentations_member.id}",
+        headers: headers
+    end
+
+    it { expect(response).to have_http_status(204) }
+
+    it "should return the updated member roles" do
+      expect(PresentationsMember.find_by(id: presentations_member.id)).to be_nil
+    end
+  end
 end
