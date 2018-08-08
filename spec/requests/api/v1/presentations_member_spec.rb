@@ -23,7 +23,7 @@ RSpec.describe "PresentationsMembers API", type: :request do
         expect(member).not_to be_nil
       end
 
-      it "should return presentarion's member with roles" do
+      it "should return presentation's member with roles" do
         expect(json_body.data).to respond_to(:id)
         expect(json_body.data).to respond_to(:name)
         expect(json_body.data).to respond_to(:roles)
@@ -32,6 +32,29 @@ RSpec.describe "PresentationsMembers API", type: :request do
         expect(a_role).to respond_to(:id)
         expect(a_role).to respond_to(:name)
         expect(a_role).to respond_to(:icon)
+      end
+    end
+  end
+
+  describe 'PUT /groups/:group_id/presentations/:presentation_id/members/:member_id' do
+    let!(:presentations_member) do
+      member = presentation.members.create(member: groups_member)
+      member.roles << create_list(:role, 4)
+      member
+    end
+
+    before do
+      put "/groups/#{group.id}/presentations/#{presentation.id}/members/#{presentations_member.id}",
+        params: member_params.to_json, headers: headers
+    end
+
+    context 'when the params are valids' do
+      let(:member_params) { { role_ids: create_list(:role, 2).map { |r| r.id } } }
+
+      it { expect(response).to have_http_status(:ok) }
+
+      it "should return the updated member roles" do
+        expect(json_body.data.roles.size).to eq(2)
       end
     end
   end

@@ -15,6 +15,17 @@ class Api::V1::PresentationsMembersController < ApplicationController
     end
   end
 
+  def update
+    @presentations_member = current_presentation.members.find params[:id]
+
+    if params[:role_ids].present?
+      @presentations_member.roles.destroy_all
+      @presentations_member.roles << params[:role_ids].map {|id| Role.find id }
+    end
+
+    render :show, status: :ok
+  end
+
   private
 
   def current_group
