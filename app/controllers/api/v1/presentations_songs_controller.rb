@@ -23,6 +23,11 @@ class Api::V1::PresentationsSongsController < ApplicationController
     end
   end
 
+  def destroy
+    presentations_song = current_presentation.songs.find(params[:id])
+    current_presentation.songs.destroy presentations_song
+  end
+
   private
 
   def song_params

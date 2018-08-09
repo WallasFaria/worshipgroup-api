@@ -55,4 +55,18 @@ RSpec.describe "PresentationsSongs API", type: :request do
     end
   end
 
+  describe 'DELETE /groups/:group_id/presentations/:presentation_id/songs/:song_id' do
+    let!(:presentations_song) { presentation.songs.create(song: groups_song) }
+
+    before do
+      delete "/groups/#{group.id}/presentations/#{presentation.id}/songs/#{presentations_song.id}",
+        headers: headers
+    end
+
+    it { expect(response).to have_http_status(204) }
+
+    it "should remove from the database" do
+      expect(PresentationsMember.find_by(id: presentations_song.id)).to be_nil
+    end
+  end
 end

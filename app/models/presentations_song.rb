@@ -12,7 +12,7 @@ class PresentationsSong < ApplicationRecord
     'G', 'Gm', 'G#', 'G#m'
   ]
 
-  validates :tone, inclusion: { in: VALID_TONES }
+  validates :tone, inclusion: { in: VALID_TONES, allow_blank: true }
 
   def name
     self.song.name
