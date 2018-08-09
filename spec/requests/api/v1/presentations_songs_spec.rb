@@ -33,4 +33,26 @@ RSpec.describe "PresentationsSongs API", type: :request do
       end
     end
   end
+
+  describe 'PUT /groups/:group_id/presentations/:presentation_id/songs/:song_id' do
+    let!(:presentations_song) do
+      presentation.songs.create(song: groups_song, tone: 'C')
+    end
+
+    before do
+      put "/groups/#{group.id}/presentations/#{presentation.id}/songs/#{presentations_song.id}",
+        params: song_params.to_json, headers: headers
+    end
+
+    context 'when the params are valids' do
+      let(:song_params) { { tone: 'Dm' } }
+
+      it { expect(response).to have_http_status(:ok) }
+
+      it "should return the updated song" do
+        expect(json_body.data.tone).to eq('Dm')
+      end
+    end
+  end
+
 end
