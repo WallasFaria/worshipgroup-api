@@ -2,6 +2,18 @@ class PresentationsSong < ApplicationRecord
   belongs_to :song
   belongs_to :presentation
 
+  VALID_TONES = [
+    'A', 'Am', 'A#', 'A#m',
+    'B', 'Bm',
+    'C', 'Cm', 'C#', 'C#m',
+    'D', 'Dm', 'D#', 'D#m',
+    'E', 'Em',
+    'F', 'Fm', 'F#', 'F#m',
+    'G', 'Gm', 'G#', 'G#m'
+  ]
+
+  validates :tone, inclusion: { in: VALID_TONES }
+
   def name
     self.song.name
   end
