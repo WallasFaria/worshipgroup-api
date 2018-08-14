@@ -6,6 +6,8 @@ RSpec.describe "Presentations API", type: :request do
   let(:group) { create(:group, member_admin: @user.id) }
   let(:another_user) { create(:random_user) }
 
+  before { host! 'api.worshipgroupapp.com' }
+
   describe 'POST /groups/:group_id/presentations/' do
     before do
       post "/groups/#{group.id}/presentations", params: presentation_params.to_json, headers: headers

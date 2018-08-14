@@ -7,6 +7,8 @@ RSpec.describe "PresentationsMembers API", type: :request do
   let(:groups_member) { create(:member, group: group) }
   let(:presentation) { create(:presentation, group: group) }
 
+  before { host! 'api.worshipgroupapp.com' }
+
   describe 'POST /groups/:group_id/presentations/:presentation_id/members' do
     before do
       post "/groups/#{group.id}/presentations/#{presentation.id}/members",

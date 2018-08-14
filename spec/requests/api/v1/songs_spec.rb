@@ -5,7 +5,7 @@ RSpec.describe "Api::V1::Songs", type: :request do
   let!(:headers) { headers_with_auth }
   let(:group) { create(:group, member_admin: @user.id) }
 
-  before { host! 'api.worshipgroup.test' }
+  before { host! 'api.worshipgroupapp.com' }
 
   describe "GET /groups/:group_id/songs" do
     context 'when filter params is not send' do

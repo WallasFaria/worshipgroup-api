@@ -4,6 +4,8 @@ RSpec.describe "Api::V1::Groups", type: :request do
   include HeaderSupport
   let!(:headers) { headers_with_auth }
 
+  before { host! 'api.worshipgroupapp.com' }
+
   describe "GET /groups" do
     let!(:groups) { create_list(:group, 3, member_admin: @user.id ) }
     before { get '/groups', headers: headers }

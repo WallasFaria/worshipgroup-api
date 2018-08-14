@@ -13,7 +13,7 @@ RSpec.describe 'Auth API', type: :request do
     }
   end
 
-  before { host! 'api.worshipgroup.test' }
+  before { host! 'api.worshipgroupapp.com' }
 
   describe 'GET /auth/validate_token' do
     context 'when the request headers are valid' do

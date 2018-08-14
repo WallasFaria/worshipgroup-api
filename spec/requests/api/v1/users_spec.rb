@@ -4,7 +4,7 @@ RSpec.describe 'Users API', type: :request do
   include HeaderSupport
   let!(:headers) { headers_with_auth }
 
-  before { host! 'api.worshipgroup.test' }
+  before { host! 'api.worshipgroupapp.com' }
 
   describe 'POST /profile/roles' do
     let!(:roles) { create_list(:role, 3) }

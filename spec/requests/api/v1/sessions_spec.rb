@@ -14,6 +14,8 @@ RSpec.describe 'Sessions API', type: :request do
     }
   end
 
+  before { host! 'api.worshipgroupapp.com' }
+
   describe 'POST /auth/sign_in' do
     before do
       post '/auth/sign_in', params: credentials.to_json, headers: headers
