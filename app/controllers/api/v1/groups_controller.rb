@@ -3,7 +3,7 @@ class Api::V1::GroupsController < ApplicationController
   before_action :set_group, only: [:show, :update, :destroy]
 
   def index
-    @groups = Group.all
+    @groups = current_api_v1_user.groups
   end
 
   def show
