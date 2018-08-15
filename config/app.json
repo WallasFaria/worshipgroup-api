@@ -1,0 +1,14 @@
+{
+  "name": "api",
+  "description": "Api worshipgroupapp.com",
+  "keywords": [
+    "dokku",
+    "rails",
+    "api"
+  ],
+  "scripts": {
+    "dokku": {
+      "postdeploy": "bundle exec rake db:migrate"
+    }
+  }
+}
