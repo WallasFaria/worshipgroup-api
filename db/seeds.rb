@@ -18,11 +18,11 @@ Role.create([
   { name: 'Tecladista', icon: '/icons/electric-keyboard.svg' },
   { name: 'Vocalista', icon: '/icons/microphone-with-wire.svg' },
   { name: 'Backing vocal', icon: '/icons/microphone.svg' },
-  { name: 'Trompetista', icon: '/icons/trumpet.svg' }
-  { name: 'Acordeonista', icon: '/icons/accordion.svg' }
-  { name: 'Clarinetista', icon: '/icons/inclined-clarinet.svg' }
-  { name: 'Flautista', icon: '/icons/flute.svg' }
-  { name: 'Harpista', icon: '/icons/harp.svg' }
-  { name: 'Saxofonista', icon: '/icons/saxophon.svg' }
+  { name: 'Trompetista', icon: '/icons/trumpet.svg' },
+  { name: 'Acordeonista', icon: '/icons/accordion.svg' },
+  { name: 'Clarinetista', icon: '/icons/inclined-clarinet.svg' },
+  { name: 'Flautista', icon: '/icons/flute.svg' },
+  { name: 'Harpista', icon: '/icons/harp.svg' },
+  { name: 'Saxofonista', icon: '/icons/saxophon.svg' },
   { name: 'Cavaquinista', icon: '/icons/ukelele-2.svg' }
 ])

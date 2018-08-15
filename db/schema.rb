@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2018_08_07_100531) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "groups", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -20,8 +23,9 @@ ActiveRecord::Schema.define(version: 2018_08_07_100531) do
 
   create_table "members", force: :cascade do |t|
     t.string "permission"
-    t.integer "user_id"
-    t.integer "group_id"
+    t.string "30"
+    t.bigint "user_id"
+    t.bigint "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_members_on_group_id"
@@ -31,15 +35,15 @@ ActiveRecord::Schema.define(version: 2018_08_07_100531) do
   create_table "presentations", force: :cascade do |t|
     t.datetime "date"
     t.string "description"
-    t.integer "group_id"
+    t.bigint "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_presentations_on_group_id"
   end
 
   create_table "presentations_members", force: :cascade do |t|
-    t.integer "member_id"
-    t.integer "presentation_id"
+    t.bigint "member_id"
+    t.bigint "presentation_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["member_id"], name: "index_presentations_members_on_member_id"
@@ -47,15 +51,15 @@ ActiveRecord::Schema.define(version: 2018_08_07_100531) do
   end
 
   create_table "presentations_members_roles", id: false, force: :cascade do |t|
-    t.integer "presentations_member_id", null: false
-    t.integer "role_id", null: false
+    t.bigint "presentations_member_id", null: false
+    t.bigint "role_id", null: false
     t.index ["presentations_member_id", "role_id"], name: "index_presentations_members_roles", unique: true
   end
 
   create_table "presentations_songs", force: :cascade do |t|
     t.string "tone"
-    t.integer "song_id"
-    t.integer "presentation_id"
+    t.bigint "song_id"
+    t.bigint "presentation_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["presentation_id"], name: "index_presentations_songs_on_presentation_id"
@@ -76,13 +80,13 @@ ActiveRecord::Schema.define(version: 2018_08_07_100531) do
     t.string "url_cipher"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "group_id"
+    t.bigint "group_id"
     t.index ["group_id"], name: "index_songs_on_group_id"
   end
 
   create_table "user_roles", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "role_id"
+    t.bigint "user_id"
+    t.bigint "role_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["role_id"], name: "index_user_roles_on_role_id"
@@ -119,4 +123,14 @@ ActiveRecord::Schema.define(version: 2018_08_07_100531) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "members", "groups"
+  add_foreign_key "members", "users"
+  add_foreign_key "presentations", "groups"
+  add_foreign_key "presentations_members", "members"
+  add_foreign_key "presentations_members", "presentations"
+  add_foreign_key "presentations_songs", "presentations"
+  add_foreign_key "presentations_songs", "songs"
+  add_foreign_key "songs", "groups"
+  add_foreign_key "user_roles", "roles"
+  add_foreign_key "user_roles", "users"
 end
