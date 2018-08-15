@@ -1,4 +1,4 @@
-json.extract! presentation, :id, :date, :group_id, :created_at, :updated_at
+json.extract! presentation, :id, :date, :description, :group_id, :created_at, :updated_at
 
 json.members presentation.members do |member|
   json.id member.id

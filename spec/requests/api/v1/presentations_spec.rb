@@ -25,6 +25,7 @@ RSpec.describe "Presentations API", type: :request do
 
       it 'should return the json for created group' do
         expect(json_body.data.date.to_time).to eq(presentation_params[:date].to_time)
+        expect(json_body.data).to respond_to(:description)
       end
     end
 
