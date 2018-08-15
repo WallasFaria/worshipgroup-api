@@ -43,6 +43,6 @@ class Api::V1::PresentationsController < ApplicationController
     end
 
     def presentation_params
-      params.require(:presentation).permit(:date, :group_id)
+      params.require(:presentation).permit(:date, :description, :group_id)
     end
 end

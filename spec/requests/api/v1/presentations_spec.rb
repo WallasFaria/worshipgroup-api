@@ -14,7 +14,9 @@ RSpec.describe "Presentations API", type: :request do
     end
 
     context 'when the params are valids' do
-      let(:presentation_params) { { date: Time.zone.now.utc.iso8601, group_id: group.id } }
+      let(:presentation_params) { { date: Time.zone.now.utc.iso8601,
+                                    description: 'Night worship',
+                                    group_id: group.id } }
 
       it { expect(response).to have_http_status(:created) }
 
@@ -25,7 +27,7 @@ RSpec.describe "Presentations API", type: :request do
 
       it 'should return the json for created group' do
         expect(json_body.data.date.to_time).to eq(presentation_params[:date].to_time)
-        expect(json_body.data).to respond_to(:description)
+        expect(json_body.data.description).to eq(presentation_params[:description])
       end
     end
 
