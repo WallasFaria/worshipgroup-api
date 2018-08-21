@@ -35,7 +35,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
       end
 
       it 'should adds the current user with group member' do
-        expect(json_body.data.members.map(&:id)).to include(@user.id)
+        expect(json_body.data.members.map(&:user_id)).to include(@user.id)
       end
     end
 
