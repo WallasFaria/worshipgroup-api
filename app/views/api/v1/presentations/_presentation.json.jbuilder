@@ -13,3 +13,10 @@ json.songs presentation.songs do |song|
   json.url_youtube song.url_youtube
   json.url_cipher song.url_cipher
 end
+
+json.rehearsals presentation.rehearsals do |rehearsal|
+  json.id rehearsal.id
+  json.date rehearsal.date
+  json.created_at rehearsal.created_at
+  json.updated_at rehearsal.updated_at
+end

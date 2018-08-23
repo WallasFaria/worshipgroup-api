@@ -26,5 +26,13 @@ FactoryBot.define do
         end
       end
     end
+
+    trait :with_rehearsals do
+      transient { rehearsals_count 1 }
+
+      after(:create) do |presentation, evaluator|
+        create_list(:rehearsal, evaluator.rehearsals_count, presentation: presentation)
+      end
+    end
   end
 end
