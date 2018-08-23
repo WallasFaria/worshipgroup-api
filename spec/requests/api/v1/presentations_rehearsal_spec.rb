@@ -30,4 +30,23 @@ RSpec.describe "Rehearsal API", type: :request do
       end
     end
   end
+
+  describe 'PUT /groups/:group_id/presentations/:presentation_id/rehearsals/:rehearsal_id' do
+    let!(:rehearsal) { create(:rehearsal, presentation: presentation) }
+
+    before do
+      put "/groups/#{group.id}/presentations/#{presentation.id}/rehearsals/#{rehearsal.id}",
+        params: rehearsal_params.to_json, headers: headers
+    end
+
+    context 'when the params are valids' do
+      let(:rehearsal_params) { { date: 5.days.from_now.utc.iso8601 } }
+
+      it { expect(response).to have_http_status(:ok) }
+
+      it "should return the updated rehearsal" do
+        expect(json_body.data.date).to eq(rehearsal_params[:date])
+      end
+    end
+  end
 end

@@ -9,6 +9,16 @@ class Api::V1::RehearsalsController < ApplicationController
     end
   end
 
+  def update
+    @rehearsal = current_presentation.rehearsals.find(params[:id])
+
+    if @rehearsal.update(rehearsal_params)
+      render :show, status: :ok
+    else
+      render json: { errors: @rehearsal.errors }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def rehearsal_params
