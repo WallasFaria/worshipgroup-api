@@ -49,4 +49,19 @@ RSpec.describe "Rehearsal API", type: :request do
       end
     end
   end
+
+  describe 'DELETE /groups/:group_id/presentations/:presentation_id/rehearsals/:rehearsal_id' do
+    let!(:rehearsal) { create(:rehearsal, presentation: presentation) }
+
+    before do
+      delete "/groups/#{group.id}/presentations/#{presentation.id}/rehearsals/#{rehearsal.id}",
+        headers: headers
+    end
+
+    it { expect(response).to have_http_status(204) }
+
+    it "should remove from the database" do
+      expect(PresentationsMember.find_by(id: rehearsal.id)).to be_nil
+    end
+  end
 end

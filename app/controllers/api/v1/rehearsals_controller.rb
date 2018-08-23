@@ -19,6 +19,12 @@ class Api::V1::RehearsalsController < ApplicationController
     end
   end
 
+  def destroy
+    @rehearsal = current_presentation.rehearsals.find(params[:id])
+
+    @rehearsal.destroy
+  end
+
   private
 
   def rehearsal_params
