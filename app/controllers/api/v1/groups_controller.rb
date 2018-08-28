@@ -7,6 +7,7 @@ class Api::V1::GroupsController < ApplicationController
   end
 
   def show
+    @rules = Ability.new(current_api_v1_user, @group).to_list
   end
 
   def create
@@ -14,6 +15,7 @@ class Api::V1::GroupsController < ApplicationController
 
     if @group.save
       @group.members.create(user_id: current_api_v1_user.id, permission: :admin)
+      @rules = Ability.new(current_api_v1_user, @group).to_list
       render :show, status: :created, location: api_v1_group_url(@group)
     else
       render json: { errors: @group.errors }, status: :unprocessable_entity
@@ -22,6 +24,7 @@ class Api::V1::GroupsController < ApplicationController
 
   def update
     if @group.update(group_params)
+      @rules = Ability.new(current_api_v1_user, @group).to_list
       render :show, status: :ok, location: api_v1_group_url(@group)
     else
       render json: { errors: @group.errors }, status: :unprocessable_entity

@@ -58,22 +58,87 @@ RSpec.describe "Api::V1::Groups", type: :request do
     let!(:another_user) { create(:random_user) }
 
     context 'when the user is a member of the group' do
-      let!(:group) { create(:group, member_admin: @user.id) }
-
       before do
         group.members.create(user: another_user, permission: :default)
         get "/groups/#{group.id}", headers: headers
       end
 
-      it { expect(response).to have_http_status(:ok) }
+      context 'with admin permission' do
+        let!(:group) { create(:group, member_admin: @user.id) }
 
-      it 'should return json for group' do
-        expect(json_body.data.name).to eq(group.name)
+        it { expect(response).to have_http_status(:ok) }
+
+        it 'should return json for group' do
+          expect(json_body.data.name).to eq(group.name)
+        end
+
+        it 'should return group members' do
+          member_names = [@user.name, another_user.name]
+          expect(json_body.data.members.map(&:name)).to eq(member_names)
+        end
+
+        it 'should return the admin rules' do
+          admin_rules = [
+            {
+              actions: ['manager'],
+              subject: ['all']
+            }
+          ]
+
+          expect(body_as_hash[:data][:rules]).to eq(admin_rules)
+        end
       end
 
-      it 'should return group members' do
-        member_names = [@user.name, another_user.name]
-        expect(json_body.data.members.map(&:name)).to eq(member_names)
+      context 'with collaborator permission' do
+        let!(:group) { create(:group, collaborator_member: @user.id) }
+
+        it 'should return the collaborator rules' do
+          collaborator_rules = [
+            {
+              actions: ['read'],
+              subject: ['all']
+            },
+            {
+              actions: ['read', 'create'],
+              subject: ['Song']
+            },
+            {
+              actions: ['manage'],
+              subject: ['PresentationsSong'],
+            },
+            {
+              actions: ['destroy'],
+              subject: ['Member'],
+              conditions: {
+                user_id: @user.id
+              }
+            }
+          ]
+
+          expect(body_as_hash[:data][:rules]).to eq(collaborator_rules)
+        end
+      end
+
+      context 'with default permission' do
+        let!(:group) { create(:group, default_member: @user.id) }
+
+        it 'should return the default rules' do
+          default_rules = [
+            {
+              actions: ['read'],
+              subject: ['all']
+            },
+            {
+              actions: ['destroy'],
+              subject: ['Member'],
+              conditions: {
+                user_id: @user.id
+              }
+            }
+          ]
+
+          expect(body_as_hash[:data][:rules]).to eq(default_rules)
+        end
       end
     end
 
@@ -82,7 +147,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
 
       it 'shoul return ActiveRecord Not Found error' do
         expect { get "/groups/#{group.id}", headers: headers }
-          .to raise_error(ActiveRecord::RecordNotFound)
+        .to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

@@ -6,4 +6,5 @@ json.members group.members do |member|
   json.added_at member.created_at
   json.user_id member.user.id
 end
+json.rules @rules
 json.url api_v1_group_url(group, format: :json)

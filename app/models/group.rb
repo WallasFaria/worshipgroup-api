@@ -5,4 +5,8 @@ class Group < ApplicationRecord
   has_many :presentations, dependent: :delete_all
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
+
+  def get_member_to user
+    members.find_by(user: user)
+  end
 end

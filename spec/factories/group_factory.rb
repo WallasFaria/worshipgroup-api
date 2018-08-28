@@ -4,6 +4,8 @@ FactoryBot.define do
 
     transient do
       member_admin :false
+      collaborator_member :false
+      default_member :false
     end
 
     after(:create) do |group, options|
@@ -11,6 +13,16 @@ FactoryBot.define do
         permission: :admin,
         user_id: options.member_admin
       ) if options.member_admin
+
+      group.members.create(
+        permission: :collaborator,
+        user_id: options.collaborator_member
+      ) if options.collaborator_member
+
+      group.members.create(
+        permission: :default,
+        user_id: options.default_member
+      ) if options.default_member
     end
   end
 end

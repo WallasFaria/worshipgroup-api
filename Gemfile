@@ -48,6 +48,8 @@ end
 
 gem 'devise_token_auth'
 
+gem 'cancancan', '~> 2.0'
+
 gem 'kaminari'
 gem 'jbuilder_pagination', require: 'jbuilder/pagination'
 gem 'ransack'
