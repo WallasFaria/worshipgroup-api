@@ -36,6 +36,16 @@ RSpec.describe "PresentationsMembers API", type: :request do
         expect(a_role).to respond_to(:icon)
       end
     end
+
+    context 'when the params are invalids' do
+      let(:member_params) { { member_id: 99990 } }
+
+      it { expect(response).to have_http_status(:unprocessable_entity) }
+
+      it 'returns the json errors for member_id' do
+        expect(json_body.errors).to respond_to(:member)
+      end
+    end
   end
 
   describe 'PUT /groups/:group_id/presentations/:presentation_id/members/:member_id' do

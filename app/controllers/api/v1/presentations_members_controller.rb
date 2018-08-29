@@ -1,23 +1,24 @@
-class Api::V1::PresentationsMembersController < ApplicationController
-  before_action :authenticate_api_v1_user!
+class Api::V1::PresentationsMembersController < Api::V1::GroupAbilitiesController
+  load_and_authorize_resource :group, through: :current_user
+  load_and_authorize_resource :presentation, through: :group
+  load_and_authorize_resource :presentations_member, through: :presentation
 
   def create
-    member = current_group.members.find(params[:member_id])
+    @presentations_member.presentation = @presentation
 
-    @presentations_member = current_presentation.members.create(member: member)
-
-    if @presentations_member
+    if @presentations_member.save
       if params[:role_ids].present?
         @presentations_member.roles << params[:role_ids].map {|id| Role.find id }
       end
 
       render :show, status: :created
+    else
+      render json: { errors: @presentations_member.errors },
+             status: :unprocessable_entity
     end
   end
 
   def update
-    @presentations_member = current_presentation.members.find params[:id]
-
     if params[:role_ids].present?
       @presentations_member.roles.destroy_all
       @presentations_member.roles << params[:role_ids].map {|id| Role.find id }
@@ -27,17 +28,11 @@ class Api::V1::PresentationsMembersController < ApplicationController
   end
 
   def destroy
-    presentations_member = current_presentation.members.find(params[:id])
-    current_presentation.members.destroy presentations_member
+    @presentation.members.destroy @presentations_member
   end
 
   private
-
-  def current_group
-    @current_group ||= current_api_v1_user.groups.find(params[:group_id])
-  end
-
-  def current_presentation
-    @current_presentation ||= current_group.presentations.find(params[:presentation_id])
+  def presentations_member_params
+    params.require('presentations_member').permit(:member_id)
   end
 end
