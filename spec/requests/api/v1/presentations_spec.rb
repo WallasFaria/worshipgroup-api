@@ -59,7 +59,7 @@ RSpec.describe "Presentations API", type: :request do
     end
   end
 
-  describe '/groups/:group_id/presentations' do
+  describe 'GET /groups/:group_id/presentations' do
     let!(:presentations) do
       create_list(:presentation, 2, :with_songs, :with_members,
                   :with_rehearsals, group: group)
@@ -108,6 +108,12 @@ RSpec.describe "Presentations API", type: :request do
 
     it 'should remove the group presentation' do
       expect(Presentation.find_by(id: presentation.id)).to be_nil
+    end
+
+    context 'when the user is not an admin member' do
+      let(:group) { create(:group, default_member: @user.id) }
+
+      it { expect(response).to have_http_status(403) }
     end
   end
 end

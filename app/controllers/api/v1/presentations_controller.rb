@@ -1,20 +1,19 @@
-class Api::V1::PresentationsController < ApplicationController
-  before_action :authenticate_api_v1_user!
-  before_action :set_presentation, only: [:show, :update, :destroy]
+class Api::V1::PresentationsController < Api::V1::GroupAbilitiesController
+  load_and_authorize_resource :group, through: :current_user
+  load_and_authorize_resource :presentation, through: :group
 
   def index
-    @presentations = current_group.presentations.all
   end
 
   def show
   end
 
   def create
-    @presentation = current_group.presentations.new(presentation_params)
+    @presentation.group = @group
 
     if @presentation.save
       render :show, status: :created,
-        location: api_v1_group_presentation_url(current_group, @presentation)
+        location: api_v1_group_presentation_url(@group, @presentation)
     else
       render json: { errors: @presentation.errors }, status: :unprocessable_entity
     end
@@ -34,13 +33,6 @@ class Api::V1::PresentationsController < ApplicationController
   end
 
   private
-    def current_group
-      @group ||= current_api_v1_user.groups.find(params[:group_id])
-    end
-
-    def set_presentation
-      @presentation = current_group.presentations.find(params[:id])
-    end
 
     def presentation_params
       params.require(:presentation).permit(:date, :description, :group_id)
