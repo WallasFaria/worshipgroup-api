@@ -19,7 +19,7 @@ RSpec.describe "Api::V1::Members", type: :request do
       it { expect(response).to have_http_status(:created) }
 
       it 'should save the group in database' do
-        member = Member.where(user_id: another_user.id).where(group_id: group.id)
+        member = Member.where(user_id: another_user.id).where(group_id: group.id).first
         expect(member).not_to be_nil
       end
 
@@ -28,8 +28,11 @@ RSpec.describe "Api::V1::Members", type: :request do
       end
     end
 
-    context 'when the params are invalids' do
-      # let(:member_params) { { user_id: @user.id, permission: :default } }
+    context 'when the user is not an admin member' do
+      let(:member_params) { { user_id: another_user.id, permission: :default } }
+      let(:group) { create(:group, default_member: @user.id) }
+
+      it { expect(response).to have_http_status(403) }
     end
   end
 
@@ -52,6 +55,22 @@ RSpec.describe "Api::V1::Members", type: :request do
 
     it 'should remove the group member' do
       expect(Member.find_by(id: member.id)).to be_nil
+    end
+
+    context 'when the user is not an admin member' do
+      let(:group) { create(:group, default_member: @user.id) }
+
+      it { expect(response).to have_http_status(403) }
+
+      context 'remove yourself' do
+        let(:member) { group.get_member_to(@user) }
+
+        it { expect(response).to have_http_status(204) }
+
+        it 'should remove the group member' do
+          expect(Member.find_by(id: member.id)).to be_nil
+        end
+      end
     end
   end
 end

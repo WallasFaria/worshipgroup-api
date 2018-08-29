@@ -6,15 +6,15 @@ class Ability
 
     case member.permission
     when 'admin'
-      can :manager, :all
+      can :manage, :all
     when 'collaborator'
       can :read, :all
-      can [:read, :create], :Song
-      can :manage, :PresentationsSong
-      can :destroy, :Member, user_id: user.id
+      can [:read, :create], Song
+      can :manage, PresentationsSong
+      can :destroy, Member, user_id: user.id
     when 'default'
       can :read, :all
-      can :destroy, :Member, user_id: user.id
+      can :destroy, Member, user_id: user.id
     end
 
   end
