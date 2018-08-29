@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "PresentationsSongs API", type: :request do
   include HeaderSupport
   let!(:headers) { headers_with_auth }
-  let(:group) { create(:group, member_admin: @user.id) }
+  let(:group) { create(:group, collaborator_member: @user.id) }
   let(:groups_song) { create(:song, group: group) }
   let(:presentation) { create(:presentation, group: group) }
 
@@ -69,6 +69,12 @@ RSpec.describe "PresentationsSongs API", type: :request do
 
     it "should remove from the database" do
       expect(PresentationsMember.find_by(id: presentations_song.id)).to be_nil
+    end
+
+    context 'when the user is a default member' do
+      let(:group) { create(:group, default_member: @user.id) }
+
+      it { expect(response).to have_http_status(403) }
     end
   end
 end

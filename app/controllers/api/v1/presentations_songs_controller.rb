@@ -1,10 +1,10 @@
-class Api::V1::PresentationsSongsController < ApplicationController
-  before_action :authenticate_api_v1_user!
+class Api::V1::PresentationsSongsController < Api::V1::GroupAbilitiesController
+  load_and_authorize_resource :group, through: :current_user
+  load_and_authorize_resource :presentation, through: :group
+  load_and_authorize_resource :presentations_song, through: :presentation
 
   def create
-    song = current_group.songs.find(params[:song_id])
-
-    @presentations_song = current_presentation.songs.new(song_params.merge(song: song))
+    @presentations_song.presentation = @presentation
 
     if @presentations_song.save
       render :show, status: :created
@@ -14,8 +14,6 @@ class Api::V1::PresentationsSongsController < ApplicationController
   end
 
   def update
-    @presentations_song = current_presentation.songs.find params[:id]
-
     if @presentations_song.update(song_params)
       render :show, status: :ok
     else
@@ -24,21 +22,16 @@ class Api::V1::PresentationsSongsController < ApplicationController
   end
 
   def destroy
-    presentations_song = current_presentation.songs.find(params[:id])
-    current_presentation.songs.destroy presentations_song
+    @presentation.songs.destroy @presentations_song
   end
 
   private
 
+  def create_params
+    params.require(:presentations_song).permit(:tone, :song_id)
+  end
+
   def song_params
     params.require(:presentations_song).permit(:tone)
-  end
-
-  def current_group
-    @current_group ||= current_api_v1_user.groups.find(params[:group_id])
-  end
-
-  def current_presentation
-    @current_presentation ||= current_group.presentations.find(params[:presentation_id])
   end
 end
