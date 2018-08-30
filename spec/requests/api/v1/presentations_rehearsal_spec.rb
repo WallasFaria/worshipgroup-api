@@ -63,5 +63,11 @@ RSpec.describe "Rehearsal API", type: :request do
     it "should remove from the database" do
       expect(PresentationsMember.find_by(id: rehearsal.id)).to be_nil
     end
+
+    context 'when the user is not an admin member' do
+      let(:group) { create(:group, default_member: @user.id) }
+
+      it { expect(response).to have_http_status(403) }
+    end
   end
 end
