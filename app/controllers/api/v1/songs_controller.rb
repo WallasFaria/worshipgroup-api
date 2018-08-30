@@ -16,8 +16,6 @@ class Api::V1::SongsController < Api::V1::GroupAbilitiesController
   end
 
   def create
-    @song.group = @group
-
     if @song.save
       render :show, status: :created, location: api_v1_group_song_url(@group, @song)
     else

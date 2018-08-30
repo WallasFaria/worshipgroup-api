@@ -6,8 +6,6 @@ class Api::V1::PresentationsMembersController < Api::V1::GroupAbilitiesControlle
                               :through_association => :members
 
   def create
-    @presentations_member.presentation = @presentation
-
     if @presentations_member.save
       if params[:role_ids].present?
         @presentations_member.roles << params[:role_ids].map {|id| Role.find id }

@@ -9,8 +9,6 @@ class Api::V1::PresentationsController < Api::V1::GroupAbilitiesController
   end
 
   def create
-    @presentation.group = @group
-
     if @presentation.save
       render :show, status: :created,
         location: api_v1_group_presentation_url(@group, @presentation)

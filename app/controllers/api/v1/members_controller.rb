@@ -3,8 +3,6 @@ class Api::V1::MembersController < Api::V1::GroupAbilitiesController
   load_and_authorize_resource :member, through: :group
 
   def create
-    @member.group = @group
-
     if @member.save
       render :show, status: :created
     else

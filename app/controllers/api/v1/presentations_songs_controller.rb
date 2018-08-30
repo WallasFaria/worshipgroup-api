@@ -5,8 +5,6 @@ class Api::V1::PresentationsSongsController < Api::V1::GroupAbilitiesController
                               :through_association => :songs
 
   def create
-    @presentations_song.presentation = @presentation
-
     if @presentations_song.save
       render :show, status: :created
     else
