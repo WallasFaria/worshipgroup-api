@@ -1,7 +1,8 @@
 class Api::V1::PresentationsSongsController < Api::V1::GroupAbilitiesController
   load_and_authorize_resource :group, through: :current_user
   load_and_authorize_resource :presentation, through: :group
-  load_and_authorize_resource :presentations_song, through: :presentation
+  load_and_authorize_resource :presentations_song, through: :presentation,
+                              :through_association => :songs
 
   def create
     @presentations_song.presentation = @presentation

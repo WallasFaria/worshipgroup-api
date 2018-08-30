@@ -1,7 +1,9 @@
 class Api::V1::PresentationsMembersController < Api::V1::GroupAbilitiesController
   load_and_authorize_resource :group, through: :current_user
   load_and_authorize_resource :presentation, through: :group
-  load_and_authorize_resource :presentations_member, through: :presentation
+  load_and_authorize_resource :presentations_member,
+                              :through => :presentation,
+                              :through_association => :members
 
   def create
     @presentations_member.presentation = @presentation
