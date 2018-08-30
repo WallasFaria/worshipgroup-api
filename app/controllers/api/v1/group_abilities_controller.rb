@@ -1,6 +1,5 @@
 class Api::V1::GroupAbilitiesController < ApplicationController
   include CanCan::ControllerAdditions
-  load_and_authorize_resource
 
   before_action :authenticate_api_v1_user!
 
