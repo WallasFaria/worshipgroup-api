@@ -1,6 +1,6 @@
-class Api::V1::SongsController < ApplicationController
-  before_action :authenticate_api_v1_user!
-  before_action :set_song, only: [:show, :update, :destroy]
+class Api::V1::SongsController < Api::V1::GroupAbilitiesController
+  load_and_authorize_resource :group, through: :current_user
+  load_and_authorize_resource :song, through: :group
 
   def index
     page, per = 1, 10
@@ -9,17 +9,17 @@ class Api::V1::SongsController < ApplicationController
       per = params[:page][:size] if params[:page][:size].present?
     end
 
-    @songs = Song.ransack(params[:q]).result.page(page).per(per)
+    @songs = @songs.ransack(params[:q]).result.page(page).per(per)
   end
 
   def show
   end
 
   def create
-    @song = current_group.songs.new(song_params)
+    @song.group = @group
 
     if @song.save
-      render :show, status: :created, location: api_v1_songs_url(@song)
+      render :show, status: :created, location: api_v1_group_song_url(@group, @song)
     else
       render json: { errors: @song.errors }, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class Api::V1::SongsController < ApplicationController
 
   def update
     if @song.update(song_params)
-      render :show, status: :ok, location: api_v1_songs_url(@song)
+      render :show, status: :ok, location: api_v1_group_song_url(@group, @song)
     else
       render json: { errors: @song.errors }, status: :unprocessable_entity
     end
@@ -38,14 +38,6 @@ class Api::V1::SongsController < ApplicationController
   end
 
   private
-    def set_song
-      @song = current_group.songs.find(params[:id])
-    end
-
-    def current_group
-      @group ||= current_api_v1_user.groups.find(params[:group_id])
-    end
-
     def song_params
       params.require(:song).permit(:name, :artist, :url_youtube, :url_cipher)
     end

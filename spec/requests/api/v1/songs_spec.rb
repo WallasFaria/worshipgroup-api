@@ -168,5 +168,11 @@ RSpec.describe "Api::V1::Songs", type: :request do
     it 'removes the song from the database' do
       expect{ Song.find song.id }.to raise_error(ActiveRecord::RecordNotFound)
     end
+
+    context 'when the user is not an admin member' do
+      let(:group) { create(:group, default_member: @user.id) }
+
+      it { expect(response).to have_http_status(403) }
+    end
   end
 end
