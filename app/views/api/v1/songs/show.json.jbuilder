@@ -1,3 +1,3 @@
 json.data do
-  json.partial! "song", song: @song
+  json.partial! "song", locals: { song: @song, group: @group }
 end
