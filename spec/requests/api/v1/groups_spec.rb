@@ -80,7 +80,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
         it 'should return the admin rules' do
           admin_rules = [
             {
-              actions: ['manager'],
+              actions: ['manage'],
               subject: ['all']
             }
           ]
