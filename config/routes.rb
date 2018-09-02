@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
       post 'profile/roles', to: 'users#add_roles'
       delete 'profile/roles/:id', to: 'users#remove_role'
+      resources :users, only: [:index]
 
       resources :roles, only: [:index]
       resources :songs

@@ -34,4 +34,60 @@ RSpec.describe 'Users API', type: :request do
       expect(@user.roles.find_by(id: role_id)).to be_nil
     end
   end
+
+  describe 'GET /users' do
+    let!(:user1) { create(:random_user, name: 'Diogo Lacerda',
+                                        email: 'giogolacerda@hotmail.ccom',
+                                        telephone: '+5522999887766') }
+
+    let!(:user2) { create(:random_user, name: 'Valentina Vieira',
+                                        email: 'valentina.vieira@yahoo.ccom',
+                                        telephone: '+5543981883366') }
+
+    let!(:user3) { create(:random_user, name: 'Diogo Stark',
+                                        email: 'victorstark01@gmail.ccom',
+                                        telephone: '+130133004499') }
+
+    before { get "/users", params: { q: query }, headers: headers }
+
+    context 'not filters' do
+      let(:query) { '' }
+
+      it { expect(response).to have_http_status(:ok) }
+
+      it 'returns a empty list' do
+        expect(body_as_hash[:data]).to eq([])
+      end
+    end
+
+    context 'filter by email' do
+      let(:query) { user1.email }
+
+      it { expect(response).to have_http_status(:ok) }
+
+      it 'returns list with id, name and roles' do
+        expected = [{ id: user1.id, name: user1.name, roles: [] }]
+        expect(body_as_hash[:data]).to eq(expected)
+      end
+    end
+
+    context 'filter by telephone' do
+      let(:query) { user2.telephone }
+
+      it 'returns list with id, name and roles' do
+        expected = [{ id: user2.id, name: user2.name, roles: [] }]
+        expect(body_as_hash[:data]).to eq(expected)
+      end
+    end
+
+    context 'filter by name' do
+      let(:query) { 'Diogo' }
+
+      it 'returns list with id, name and roles' do
+        expected = ['Diogo Lacerda', 'Diogo Stark']
+        expect(json_body.data.size).to eq(expected.size)
+        expect(json_body.data.map(&:name)).to include(*expected)
+      end
+    end
+  end
 end
